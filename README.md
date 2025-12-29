@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+📝 Pastebin-Lite
 
-## Getting Started
+A lightweight Pastebin-like web application that allows users to store text content, generate shareable links, and optionally expire content based on time or number of views.
 
-First, run the development server:
+🚀 Live Demo
 
-```bash
+Production URL:
+👉 https://pastebin-lite-vercel.vercel.app
+
+✨ Features
+
+Create and store text pastes
+
+Generate unique, shareable URLs
+
+View pastes using the generated link
+
+Optional expiration:
+
+⏱️ Time-based expiry
+
+👁️ View-count-based expiry
+
+Automatic view count tracking
+
+Server-side rendering with Next.js App Router
+
+Cloud-hosted PostgreSQL database
+
+🛠️ Tech Stack
+
+Framework: Next.js (App Router)
+
+Backend: Node.js
+
+Database: PostgreSQL (Neon)
+
+ORM: Prisma
+
+Deployment: Vercel
+
+📡 API Endpoints
+Create a Paste
+
+POST /api/paste
+
+Request Body (JSON):
+
+{
+  "content": "Hello world",
+  "expiresInMinutes": 60,
+  "maxViews": 5
+}
+
+
+Response:
+
+{
+  "id": "cmjrbtfwy0000gg8gs0dneicq",
+  "slug": "b5a8c89b",
+  "url": "https://pastebin-lite-vercel.vercel.app/p/b5a8c89b"
+}
+
+View a Paste
+
+GET /p/[slug]
+
+Displays paste content
+
+Increments view count
+
+Shows expiry message if expired
+
+🗄️ Database Schema
+model Paste {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  content    String
+  expiresAt  DateTime?
+  maxViews   Int?
+  views      Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+⚙️ Environment Variables
+
+Create a .env file locally or configure them in Vercel:
+
+DATABASE_URL=postgresql://<user>:<password>@<host>/<db>?sslmode=require
+NEXT_PUBLIC_BASE_URL=https://pastebin-lite-vercel.vercel.app
+
+🧪 Local Development
+git clone https://github.com/nishthasharma15/pastebin-lite
+cd pastebin-lite
+npm install
+npx prisma generate
+npx prisma db push
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+App will run at:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000
 
-## Learn More
+🧠 Design Notes
 
-To learn more about Next.js, take a look at the following resources:
+Uses Prisma ORM for type-safe database access
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Implements expiration logic at request time
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Uses server components for secure data fetching
 
-## Deploy on Vercel
+Designed to be simple, testable, and production-ready
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+📌 Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project was built as part of a take-home evaluation
+
+AI tools were used as development assistants
+
+All implementation and design decisions are fully understood and explainable
+
+📄 License
+
+MIT License
