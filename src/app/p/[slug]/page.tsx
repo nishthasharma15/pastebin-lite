@@ -1,39 +1,30 @@
-export default function HomePage() {
+// src/app/p/[slug]/page.tsx
+import { notFound } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
+
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function PastePage({ params }: PageProps) {
+  const { slug } = params;
+  
+  const paste = await prisma.paste.findUnique({
+    where: { slug },
+  });
+
+  if (!paste) {
+    notFound();
+  }
+
   return (
-    <main style={{ padding: "2rem", color: "white" }}>
-      <h1>Pastebin Lite</h1>
-
-      <p>
-        This is a lightweight Pastebin-like application.
-      </p>
-
-      <h2>How to use</h2>
-
-      <ol>
-        <li>Send a POST request to <code>/api/paste</code></li>
-        <li>Receive a shareable URL</li>
-        <li>Open the URL to view the paste</li>
-      </ol>
-
-      <h3>Example API Request</h3>
-
-      <pre
-        style={{
-          background: "#111",
-          padding: "1rem",
-          borderRadius: "6px",
-          overflowX: "auto",
-        }}
-      >
-{`POST /api/paste
-Content-Type: application/json
-
-{
-  "content": "Hello world",
-  "expiresInMinutes": 60,
-  "maxViews": 5
-}`}
-      </pre>
-    </main>
+    <div>
+      <pre>{paste.content}</pre>
+    </div>
   );
 }
+
+// Important: This tells Next.js this is a dynamic route
+export const dynamicParams = true;

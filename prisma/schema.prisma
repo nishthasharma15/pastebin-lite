@@ -8,11 +8,12 @@ datasource db {
 }
 
 model Paste {
-  id         String   @id @default(cuid())
+  id         Int      @id @default(autoincrement())
   slug       String   @unique
   content    String
   expiresAt  DateTime?
   maxViews   Int?
   views      Int      @default(0)
   createdAt  DateTime @default(now())
+  title      String?
 }
