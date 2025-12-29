@@ -73,3 +73,25 @@ This project was implemented as part of a take-home technical assignment and is 
   "expiresInMinutes": 60,
   "maxViews": 5
 }
+----
+
+## 🚀 Deployment
+
+The application is deployed on Vercel
+
+PostgreSQL is hosted on Neon
+
+Environment variables are configured in the Vercel dashboard
+
+Prisma client is generated during the build process
+
+## 🧠 Design Considerations
+
+Prisma ORM is used for type safety and clean database access
+
+Expiry logic is enforced at read time to keep the system stateless
+
+The application is designed to be minimal, scalable, and easy to test
+
+No authentication is included to keep the scope aligned with the assignment
+
