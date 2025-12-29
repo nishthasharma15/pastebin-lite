@@ -57,24 +57,6 @@ This project was implemented as part of a take-home technical assignment and is 
 - Prisma provides type-safe database access
 - Environment variables are used for secure configuration
 
----
-
-## 📡 API Documentation
-
-### ➤ Create a Paste
-
-**Endpoint:**  
-`POST /api/paste`
-
-**Request Body (JSON):**
-```json
-{
-  "content": "Hello world",
-  "expiresInMinutes": 60,
-  "maxViews": 5
-}
-----
-
 ## 🚀 Deployment
 
 The application is deployed on Vercel
@@ -94,4 +76,22 @@ Expiry logic is enforced at read time to keep the system stateless
 The application is designed to be minimal, scalable, and easy to test
 
 No authentication is included to keep the scope aligned with the assignment
+
+---
+
+## 📡 API Documentation
+
+### ➤ Create a Paste
+
+**Endpoint:**  
+`POST /api/paste`
+
+**Request Body (JSON):**
+```json
+{
+  "content": "Hello world",
+  "expiresInMinutes": 60,
+  "maxViews": 5
+}
+----
 
