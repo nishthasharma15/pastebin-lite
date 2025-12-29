@@ -1,4 +1,3 @@
-// src/app/p/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
@@ -20,11 +19,16 @@ export default async function PastePage({ params }: PageProps) {
   }
 
   return (
-    <div>
-      <pre>{paste.content}</pre>
+    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <pre style={{ 
+        background: '#f4f4f4', 
+        padding: '15px', 
+        borderRadius: '5px',
+        whiteSpace: 'pre-wrap',
+        wordWrap: 'break-word'
+      }}>
+        {paste.content}
+      </pre>
     </div>
   );
 }
-
-// Important: This tells Next.js this is a dynamic route
-export const dynamicParams = true;
