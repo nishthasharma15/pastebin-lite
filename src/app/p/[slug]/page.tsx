@@ -1,5 +1,4 @@
-import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
 interface PageProps {
   params: {
@@ -8,27 +7,49 @@ interface PageProps {
 }
 
 export default async function PastePage({ params }: PageProps) {
-  const { slug } = params;
-  
+  const slug = params.slug;
+
+  if (!slug) {
+    return <h1>Invalid paste link</h1>;
+  }
+
   const paste = await prisma.paste.findUnique({
     where: { slug },
   });
 
   if (!paste) {
-    notFound();
+    return <h1>Paste not found</h1>;
   }
 
+  if (paste.expiresAt && paste.expiresAt < new Date()) {
+    return <h1>This paste has expired</h1>;
+  }
+
+  if (paste.maxViews !== null && paste.views >= paste.maxViews) {
+    return <h1>This paste has expired</h1>;
+  }
+
+  await prisma.paste.update({
+    where: { slug },
+    data: { views: { increment: 1 } },
+  });
+
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <pre style={{ 
-        background: '#f4f4f4', 
-        padding: '15px', 
-        borderRadius: '5px',
-        whiteSpace: 'pre-wrap',
-        wordWrap: 'break-word'
-      }}>
+    <main style={{ padding: "2rem" }}>
+      <h1>Paste</h1>
+
+      <pre
+        style={{
+          background: "#f4f4f4",
+          padding: "1rem",
+          whiteSpace: "pre-wrap",
+          borderRadius: "6px",
+        }}
+      >
         {paste.content}
       </pre>
-    </div>
+
+      <p>Views: {paste.views + 1}</p>
+    </main>
   );
 }
