@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { nanoid } from "nanoid";
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await req.json();
     const { content, expiresInMinutes, maxViews } = body;
 
-    if (!content) {
+    if (!content || typeof content !== "string") {
       return NextResponse.json(
-        { error: "Content is required" },
+        { error: "Invalid content" },
         { status: 400 }
       );
     }
@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
 
     const paste = await prisma.paste.create({
       data: {
-        content,
         slug,
+        content,
         expiresAt: expiresInMinutes
           ? new Date(Date.now() + expiresInMinutes * 60 * 1000)
           : null,
@@ -27,15 +27,18 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
     return NextResponse.json({
       id: paste.id,
       slug: paste.slug,
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/p/${paste.slug}`,
+      url: `${baseUrl}/p/${paste.slug}`,
     });
   } catch (error) {
-    console.error(error);
+    console.error("POST /api/paste error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to create paste" },
       { status: 500 }
     );
   }
